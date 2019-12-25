@@ -2,6 +2,14 @@ package dbexample;
 
 import java.sql.*;
 
+/* Maven dependency
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.2.9</version>
+</dependency>
+ */
+
 public class Main {
 
     public static void main(String[] args) {

@@ -1,6 +1,9 @@
 package dbexample;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.sql.*;
+import java.util.Scanner;
 
 /* Maven dependency
 <dependency>
@@ -13,10 +16,35 @@ import java.sql.*;
 public class Main {
 
     public static void main(String[] args) {
-        new Main().run1();
+        new Main().run3();
     }
 
     private void run() {
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/example", "postgres", "123")) {
+            PreparedStatement ps = connection.prepareStatement("insert into example.example.vendor (title, country_id) values (?,?)");
+            Scanner in = new Scanner(System.in);
+            String name = in.nextLine();
+            ps.setString(1, name);
+            ps.setInt(2, 5);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void run5() {
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/example", "postgres", "123")) {
+            PreparedStatement ps = connection.prepareStatement("insert into example.example.country (name) values (?)");
+            Scanner in = new Scanner(System.in);
+            String name = in.nextLine();
+            ps.setString(1, name);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void run4() {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/example", "postgres", "123")) {
             PreparedStatement ps = connection.prepareStatement("update example.example.customer set sum = ? where sum < ?");
             ps.setInt(2, 1000);
@@ -29,11 +57,13 @@ public class Main {
 
     private void run3() {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/example", "postgres", "123")) {
-            PreparedStatement ps = connection.prepareStatement("delete from example.example.customer where sum = ?");
-            ps.setInt(1, 0);
+            PreparedStatement ps = connection.prepareStatement("delete from example.example.country where id = ?");
+            ps.setInt(1, 5);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("Ошибка внешнего ключа");
+            System.out.println(e.getMessage());
         }
     }
 
